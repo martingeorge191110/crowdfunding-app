@@ -18,16 +18,61 @@ enum Gender {
   FEMALE
 }
 
+enum Status {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+enum Category {
+  EDUCATION
+  HEALTH
+  ENVIRONMENT
+  TECHNOLOGY
+  ARTS
+}
+
 model User {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   f_name    String
   l_name    String
-  email     String   @unique
+  email     String     @unique
   password  String
   gender    Gender
   avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  bio       String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Campaign  Campaign[]
+  Donation  Donation[]
 
   @@unique([id, email])
+}
+
+model Campaign {
+  id            String     @id @default(uuid())
+  name          String
+  description   String
+  goal          Float
+  status        Status
+  category      Category
+  currentAmount Float      @default(0)
+  startDate     DateTime
+  endDate       DateTime
+  author        User       @relation(fields: [userId], references: [id])
+  userId        String
+  donations     Donation[]
+  paypalEmail   String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Donation {
+  id         String   @id @default(uuid())
+  amout      Float
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaignId String
+  author     User     @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime @default(now())
 }

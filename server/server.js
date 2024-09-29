@@ -4,6 +4,7 @@ import cors from 'cors'
 import Auth from './routers/authRouter.js'
 import { ErrorHandle } from './middlewares/errorHandling.js'
 import cookieParser from 'cookie-parser'
+import Campaign from './routers/campaignRouter.js'
 
 dotenv.config()
 
@@ -20,6 +21,8 @@ server.use(express.urlencoded({
 /* Authintication Router */
 server.use("/api/auth", Auth)
 
+/* Campaign Router */
+server.use("/api/campaigns", Campaign)
 
 server.use("*", ErrorHandle)
 
