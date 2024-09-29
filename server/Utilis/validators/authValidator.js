@@ -74,4 +74,28 @@ const loginValid = (email, password) => {
    return (response)
 }
 
-export {registerValid, loginValid}
+/**
+ * Function Validator to check reset password information Validation
+ */
+
+const resetPassValid = (pass, conPass, email) => {
+   let response = {
+      success: false,
+      message: "Every Thing is Valid!"
+   }
+   if (!validator.isEmail(email)) {
+      response.message = "Email Address is not Valid!"
+      return (response)
+   } else if (pass.length === 0) {
+      response.message = "Please Enter your password!"
+      return (response)
+   } else if (conPass !== pass) {
+      response.message = "Confirm password is not equal password!"
+      return (response)
+   }
+
+   response.success = true
+   return (response)
+}
+
+export {registerValid, loginValid, resetPassValid}

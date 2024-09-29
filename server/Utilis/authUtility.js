@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import nodemailer from 'nodemailer'
 
 
 /**
@@ -42,4 +43,39 @@ const respSuccess = (res, statusCode, statusMess, message, jsonData) => {
       }))
 }
 
-export {creatToken, setCookieUtility, respSuccess}
+/**
+ * Function utility to send mail for setting user password
+ */
+
+const sendMail = async (userEmail, genCode) => {
+   const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+         user: process.env.GMAIL_USER,
+         pass: process.env.GMAIL_PASS
+      }
+   })
+
+   const mail = {
+      from: process.env.GMAIL_USER,
+		to: userEmail,
+		subject: 'Password Reset Request',
+		html: `
+			<h1>Password Reset</h1>
+			<p>Generated Code</p>
+			<h2>${genCode}</h2>
+		`,
+   }
+
+   try {
+      await transporter.sendMail(mail)
+
+      return (true)
+   } catch (err) {
+      console.log(err)
+      return (false)
+   }
+}
+
+
+export {creatToken, sendMail,setCookieUtility, respSuccess}

@@ -1,15 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { loginValid, registerValid } from "../Utilis/validators/authValidator.js";
+import { loginValid, registerValid, resetPassValid } from "../Utilis/validators/authValidator.js";
 import { createError } from "../Utilis/createError.js";
 import bcrypt, { hashSync } from "bcrypt";
-import { creatToken, respSuccess, setCookieUtility } from "../Utilis/authUtility.js";
+import { creatToken, respSuccess, sendMail, setCookieUtility } from "../Utilis/authUtility.js";
+import validator from "validator";
+
 
 const prisma = new PrismaClient()
 
 
 /**
  * Register controller, controlling Registering Process
- * 
+ *
  * Description:
  *          [1] --> get user infoprmation and check inf validation
  *          [2] --> check at first existing of user information to avoid conflict ind data base
@@ -62,7 +64,7 @@ const register = async (req, res, next) => {
 
 /**
  * LogIn Controller, Controlling login process
- * 
+ *
  * Description:
  *             [1] --> get user infromation and check for validation
  *             [2] --> Check whether the user email not exist
@@ -106,4 +108,86 @@ const logIn = async (req, res, next) => {
    }
 }
 
-export {register, logIn}
+/**
+ * Send Gen Code Controller, for reseting password process
+ *
+ * Description:
+ *             [1] --> get user email and check validation
+ *             [2] --> Check whether user exist or not
+ *             [3] --> Send generated code within mail and check mail sent or not
+ */
+let genCodeGlobal = {};
+const sendGenCode = async (req, res, next) => {
+   const {email} = req.body
+   if (!validator.isEmail(email))
+      return (next(createError("Email Address is not Valid!", 400)))
+
+   try {
+      const user = await prisma.user.findUnique({
+         where: {email}
+      })
+
+      if (!user)
+         return (next(createError("Email Address is not Exist", 404)))
+
+      const genCode = Number(String(Math.random()).slice(3, 9))
+      genCodeGlobal[email] = genCode
+
+      const senMailVar = await sendMail(user.email, genCode)
+
+      if (!senMailVar)
+         return (next(createError("Cannot sending generated code within mail", 409)))
+
+      return (respSuccess(res, 200, "Operation, Seccessed", "Mail sent with genCode, Succesfuly", genCode))
+   } catch (err) {
+      const newErr = createError("Somthing went wrong during sending generated code within mail", 500)
+      return (next(newErr))
+   }
+}
+
+/**
+ * Reset Password Controller, final step for setting new Password
+ *
+ * Description:
+ *             [1] --> get user information, Check Code generated to user Validation and inf validation
+ *             [2] --> hashed new password, updating user password and response
+ * 
+ * IMP NOTE: this controller should be used after sending gen code and
+ *             Checking whether email exist or not (after sendGenCode Controller)
+ */
+
+const resetPass = async (req, res, next) => {
+   const {password, confirmPass, email, generatedCode} = req.body
+
+   /* Check Gen Code Validation */
+   if (!genCodeGlobal[email]) {
+      return (next(createError("No generated code found for this email.", 404)));
+   }
+   if (genCodeGlobal[email] !== Number(generatedCode)) {
+      return (next(createError("The entered code is incorrect.", 400)));
+   }
+
+   /* Continue the process */
+   const infValidation = resetPassValid(password, confirmPass, email)
+   if (infValidation.success === false)
+      return (next(createError(infValidation.message, 400)))
+
+   try {
+      const hashedPass = hashSync(password, 10);
+
+      await prisma.user.update({
+         where: {email},
+         data: {
+            password: hashedPass
+         }
+      })
+
+      delete genCodeGlobal[email]
+      return (respSuccess(res, 200, "Operation, Succesfuly", "Password updated successfully!", null))
+   } catch (err) {
+      return (next(createError("Somthing went wrong during Password Updating process", 500)))
+   }
+}
+
+
+export {register, logIn, sendGenCode, resetPass}
