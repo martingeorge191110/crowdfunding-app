@@ -7,6 +7,7 @@ const Campaign = express.Router()
 /* Token Verification Middleware */
 Campaign.use(verifyToken)
 
+/* Route which related to user Campaign infomration (his Campaigns) */
 Campaign.route("/")
                   .post(createCampaign)
                   .get(retriveUserCampaign)

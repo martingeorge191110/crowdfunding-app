@@ -5,6 +5,7 @@ import Auth from './routers/authRouter.js'
 import { ErrorHandle } from './middlewares/errorHandling.js'
 import cookieParser from 'cookie-parser'
 import Campaign from './routers/campaignRouter.js'
+import User from './routers/userRouter.js'
 
 dotenv.config()
 
@@ -23,6 +24,9 @@ server.use("/api/auth", Auth)
 
 /* Campaign Router */
 server.use("/api/campaigns", Campaign)
+
+/* User Router */
+server.use("/api/users", User)
 
 server.use("*", ErrorHandle)
 
