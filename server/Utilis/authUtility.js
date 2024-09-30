@@ -78,4 +78,9 @@ const sendMail = async (userEmail, genCode) => {
 }
 
 
-export {creatToken, sendMail,setCookieUtility, respSuccess}
+export {
+   creatToken,
+   sendMail,
+   setCookieUtility,
+   respSuccess
+}

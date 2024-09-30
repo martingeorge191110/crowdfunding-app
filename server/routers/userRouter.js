@@ -1,6 +1,6 @@
 import express from 'express'
 import verifyToken from '../middlewares/verifyToken.js'
-import { deleteAccount, retrieveProfile, updateProfile } from '../controllers/userController.js'
+import { deleteAccount, deleteInfo, retrieveProfile, updateProfile, userSearch } from '../controllers/userController.js'
 
 
 const User = express.Router()
@@ -11,6 +11,8 @@ User.route("/profile")
                      .get(retrieveProfile)
                      .put(updateProfile)
                      .post(deleteAccount)
+                     .delete(deleteInfo)
 
+User.route("/search").get(userSearch)
 
 export default User

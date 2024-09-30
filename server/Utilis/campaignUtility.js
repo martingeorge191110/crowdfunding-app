@@ -13,4 +13,6 @@ const resSuccCamp = (res, statusCode, statusMess, message, jsonData) => {
 }
 
 
-export {resSuccCamp}
+export {
+   resSuccCamp
+}

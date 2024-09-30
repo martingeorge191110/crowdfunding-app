@@ -146,4 +146,10 @@ const updateCampaign = async (req, res, next) => {
 }
 
 
-export {createCampaign, retriveUserCampaign, searchCampaign, deleteCampaign, updateCampaign}
+export {
+   createCampaign,
+   retriveUserCampaign,
+   searchCampaign,
+   deleteCampaign,
+   updateCampaign
+}

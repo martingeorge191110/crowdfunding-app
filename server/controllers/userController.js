@@ -91,4 +91,69 @@ const deleteAccount = async (req, res, next) => {
    }
 }
 
-export {retrieveProfile, updateProfile, deleteAccount}
+/**
+ * deleteInfo Controller
+ * 
+ * Description:
+ *             [1] --> get userid and which section to delete after verifyng user token
+ *             [2] --> response
+ */
+
+const deleteInfo = async (req, res, next) => {
+   const {id} = req
+   const query = req.query
+
+   try {
+      await prisma.user.update({
+         where: {id},
+         data: {
+            [`${query.delete}`]: null
+         }
+      })
+
+      return (respSuccess(res, 200, "Operation, Successed", `${query.delete} deleted, Successfuly`, null))
+   } catch (err) {
+      return (next(createError(`Something Went wrong while deleting ${query.delete}`)))
+   }
+}
+
+/**
+ * userSearch Controller
+ * 
+ * Description:
+ *             [1] -->
+ */
+
+const userSearch = async (req, res, next) => {
+   const {userId} = req.query
+
+   try {
+      const user = await prisma.user.findUnique({
+         where: {id: userId},
+         select: {
+            id: true,
+            f_name: true,
+            l_name: true,
+            avatar: true,
+            bio: true,
+            gender: true,
+            createdAt: true
+         }
+      })
+
+      if (!user)
+         return (next(createError("User is not Found!", 404)))
+
+      return (respSuccess(res, 200, "Operation, Successed", "User Found, Successfuly", user))
+   } catch (err) {
+      return (next(createError("Something went wrong while Deleteing user Account", 500)))
+   }
+}
+
+export {
+   retrieveProfile,
+   updateProfile,
+   deleteAccount,
+   deleteInfo, 
+   userSearch
+}

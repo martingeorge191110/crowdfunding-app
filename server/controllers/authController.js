@@ -190,4 +190,9 @@ const resetPass = async (req, res, next) => {
 }
 
 
-export {register, logIn, sendGenCode, resetPass}
+export {
+   register,
+   logIn,
+   sendGenCode,
+   resetPass
+}

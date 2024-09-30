@@ -8,4 +8,6 @@ const createError = (message, statusCode) => {
    return (new NewError(message, statusCode))
 }
 
-export {createError}
+export {
+   createError
+}

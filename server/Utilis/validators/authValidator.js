@@ -98,4 +98,8 @@ const resetPassValid = (pass, conPass, email) => {
    return (response)
 }
 
-export {registerValid, loginValid, resetPassValid}
+export {
+   registerValid,
+   loginValid,
+   resetPassValid
+}
