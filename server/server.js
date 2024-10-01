@@ -6,6 +6,7 @@ import { ErrorHandle } from './middlewares/errorHandling.js'
 import cookieParser from 'cookie-parser'
 import Campaign from './routers/campaignRouter.js'
 import User from './routers/userRouter.js'
+import Dontation from './routers/donationRouter.js'
 
 dotenv.config()
 
@@ -27,6 +28,9 @@ server.use("/api/campaigns", Campaign)
 
 /* User Router */
 server.use("/api/users", User)
+
+/* Donation Router */
+server.use("/api/donation", Dontation)
 
 server.use("*", ErrorHandle)
 
