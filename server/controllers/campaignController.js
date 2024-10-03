@@ -13,17 +13,17 @@ import { PrismaClient } from "@prisma/client"
 
 const createCampaign = async (req, res, next) => {
    const { id } = req
+
    const {name, description, goal, status, category,
       startDate, endDate, paypalEmail
    } = req.body
-
 
    try {
       const campaign = await prisma.campaign.create({
          data: {
             name: name,
             description: description,
-            goal: goal,
+            goal: Number(goal),
             status: status,
             category: category,
             startDate: startDate,
@@ -32,12 +32,13 @@ const createCampaign = async (req, res, next) => {
             paypalEmail: paypalEmail
          }
       })
-      console.log(campaign)
+
       const resObj = {
          ...campaign
       }
       return (resSuccCamp(res, 201, "Operation, Successfuly", "New Campaign Created", resObj))
    } catch (err) {
+      console.log(err)
       return (next(createError("Something went wrong during creating new Campaign", 500)));
    }
 }

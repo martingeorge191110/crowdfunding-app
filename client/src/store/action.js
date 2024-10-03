@@ -12,6 +12,14 @@ const signInAction = (token, userInf, active) => {
    });
 }
 
+const setProfileAction = (userInf) => {
+   return ({
+      type: "SET_PROFILE",
+      payload: userInf
+   });
+}
+
 export {
-   signInAction
+   signInAction,
+   setProfileAction
 }

@@ -4,6 +4,7 @@ import { createError } from "../Utilis/createError.js";
 import bcrypt, { hashSync } from "bcrypt";
 import { creatToken, respSuccess, sendMail, setCookieUtility } from "../Utilis/authUtility.js";
 import validator from "validator";
+import jwt from 'jsonwebtoken'
 
 
 const prisma = new PrismaClient()
@@ -29,7 +30,7 @@ const register = async (req, res, next) => {
       const findUser = await prisma.user.findUnique({
          where: { email }
       })
-      console.log(findUser)
+
       if (findUser)
          return (next(createError("Email Address Already Exists!", 409)))
 
@@ -160,6 +161,7 @@ const resetPass = async (req, res, next) => {
    const {password, confirmPass, email, generatedCode} = req.body
 
    /* Check Gen Code Validation */
+   console.log(genCodeGlobal)
    if (!genCodeGlobal[email]) {
       return (next(createError("No generated code found for this email.", 404)));
    }
@@ -189,10 +191,34 @@ const resetPass = async (req, res, next) => {
    }
 }
 
+const verifyTokenController = async (req, res, next) => {
+   const {authorization} =  req.headers
+
+   if (!authorization) {
+      const newErr = createError("Authorization Must be included in Header", 404)
+      return (ErrorHandle(newErr, req, res, next));
+   }
+
+   const token = authorization.split(' ')[1]
+   if (!token) {
+      const newErr = createError("Token is not found in Header", 404)
+      return (ErrorHandle(newErr, req, res, next));
+   }
+
+   jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+      if (err) {
+         const newErr = createError("Token is not Valid!", 403)
+         return (ErrorHandle(newErr, req, res, next));
+      }
+
+      return respSuccess(res, 200, "Operation, Seccessed!", "Token is Valid, Welcome again", null)
+   })
+}
 
 export {
    register,
    logIn,
    sendGenCode,
    resetPass
+   ,verifyTokenController
 }

@@ -35,7 +35,62 @@ const registerApi = async (body) => {
    }
 }
 
+/**
+ * Function Services, send Generated Code
+ */
+
+const sendCodeApi = async (email) => {
+   try {
+      const response = await authApi.post(
+         "/gencode",
+         {email}
+      );
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
+/**
+ * Function Services, to check the code verification, then continue reset password process
+ */
+
+const resetPassApi = async (bodyObject) => {
+   try {
+      const response = await authApi.put(
+         "/passreset", bodyObject
+      );
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
+/**
+ * Function service, check token validation
+ */
+
+const verifyToken = async (token) => {
+   try {
+      const response = await authApi.get("/login", {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+         }
+      })
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
 export {
    loginApi,
-   registerApi
+   registerApi,
+   sendCodeApi,
+   resetPassApi,
+   verifyToken
 }

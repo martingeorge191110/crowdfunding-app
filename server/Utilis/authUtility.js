@@ -24,7 +24,7 @@ const setCookieUtility = (res, token) => {
    const age = 1000 * 60 * 60 * 24 * 3;
 
    res.cookie("token", token, {
-         httpOnly: true,
+         httpOnly: false,
          secure: process.env.NODE_ENV === "production",
          maxAge: age
    })

@@ -15,6 +15,10 @@ const userStateReducer = (state = userState, action) => {
          token: action.payload.token, active: action.payload.active,
          userInf: action.payload.userInf
       })
+   if (action.type === "SET_PROFILE")
+      return ({
+         ...state, userInf: action.payload, active: true
+      })
 
    return (state)
 }

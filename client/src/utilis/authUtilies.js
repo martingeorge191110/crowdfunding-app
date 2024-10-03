@@ -9,7 +9,7 @@ function getCookie(name) {
    let token = null;
    cookies.forEach((element) => {
       if (element.slice(0, 5) === name)
-         token = element.slice(7);
+         token = element.slice(6);
          
    });
    return token;

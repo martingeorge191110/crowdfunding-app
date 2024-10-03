@@ -7,14 +7,21 @@ import cookieParser from 'cookie-parser'
 import Campaign from './routers/campaignRouter.js'
 import User from './routers/userRouter.js'
 import Dontation from './routers/donationRouter.js'
+import morgan from 'morgan'
 
 dotenv.config()
 
 const environment = process.env
 const server = express()
 
+// server.use(morgan("tiny"))
 server.use(cookieParser())
-server.use(cors())
+server.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true
+  })
+);
 server.use(express.json())
 server.use(express.urlencoded({
    'extended': true

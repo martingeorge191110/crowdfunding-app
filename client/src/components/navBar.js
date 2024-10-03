@@ -1,16 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const NavBar = () => {
-
-
+const NavBar = ({refrenece}) => {
 
 
 
   return (
     <>
-      <div className="min-h-screen fixed left-0 flex flex-row bg-gray-100">
-        <div className="flex flex-col w-56 bg-white rounded-r-3xl overflow-hidden">
+      <div ref={refrenece} className={`min-h-screen z-50 -left-60 lg:left-0 transition ease-in-out fixed  flex flex-row bg-gray-100`}>
+        <div className="flex flex-col  w-56 bg-white rounded-r-3xl ">
           <div className="flex items-center justify-around h-20 shadow-md">
             <h1 className="text-l text-center uppercase text-indigo-500">Campaigns Platform</h1>
           </div>
@@ -24,7 +22,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li>
-              <Link className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <Link to='/' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-chat"></i>
                 </span>
@@ -32,7 +30,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li>
-              <Link className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <Link to='/' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-user"></i>
                 </span>
@@ -40,7 +38,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li>
-              <Link className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <Link to='/' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-bell"></i>
                 </span>
