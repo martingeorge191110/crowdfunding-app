@@ -68,11 +68,12 @@ model Campaign {
 }
 
 model Donation {
-  id         String   @id @default(uuid())
-  amout      Float
-  campaign   Campaign @relation(fields: [campaignId], references: [id])
-  campaignId String
-  author     User     @relation(fields: [userId], references: [id])
-  userId     String
-  createdAt  DateTime @default(now())
+  id           String   @id @default(uuid())
+  amout        Float
+  campaign     Campaign @relation(fields: [campaignId], references: [id])
+  campaignId   String
+  author       User     @relation(fields: [userId], references: [id])
+  userId       String
+  createdAt    DateTime @default(now())
+  seenByAuthor Boolean  @default(false)
 }
