@@ -43,7 +43,7 @@ const CreateCamp = ({close, token, setCampList, campList}) => {
 
    return (
       <>
-<div className="bg-white rounded-lg shadow-lg p-8 mb-8 transition-all duration-500 ease-in-out transform scale-100">
+<div className="mt-8 bg-white rounded-lg shadow-lg p-8 mb-8 transition-all duration-500 ease-in-out transform scale-100">
   <div className="flex justify-between items-center mb-4">
     <h2 className="text-xl font-bold text-gray-700">Create New Campaign</h2>
     <button onClick={() => close(false)} className="text-gray-700 hover:text-red-600" aria-label="Close">

@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const NavBar = ({refrenece}) => {
+const NavBar = ({refrenece, clickFunc}) => {
 
-
+  
 
   return (
     <>
       <div ref={refrenece} className={`min-h-screen z-50 -left-60 lg:left-0 transition ease-in-out fixed  flex flex-row bg-gray-100`}>
         <div className="flex flex-col  w-56 bg-white rounded-r-3xl ">
-          <div className="flex items-center justify-around h-20 shadow-md">
+          <div className="flex items-center relative justify-around h-20 shadow-md">
+            <button onClick={() => refrenece.current.classList.toggle("left-0")} className="lg:hidden text-gray-700 absolute -right-5 top-7 hover:text-red-600" aria-label="Close">
+              <i className="bx bx-x text-2xl"></i>
+            </button>
             <h1 className="text-l text-center uppercase text-indigo-500">Campaigns Platform</h1>
           </div>
           <ul className="flex justify-around min-h-96 flex-col py-4">
