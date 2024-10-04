@@ -38,8 +38,7 @@ const createCampaign = async (req, res, next) => {
       }
       return (resSuccCamp(res, 201, "Operation, Successfuly", "New Campaign Created", resObj))
    } catch (err) {
-      console.log(err)
-      return (next(createError("Something went wrong during creating new Campaign", 500)));
+      return (next(createError("Something went wrong during creating new Campaign, Please check all your details!", 500)));
    }
 }
 

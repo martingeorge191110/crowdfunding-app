@@ -140,7 +140,7 @@ const DonationsSeenByAuhor = async (req, res, next) => {
          })
       })
 
-      return (respSuccess(res, 200, "Operation, Successed!", "New Notification!", donations))
+      return (respSuccess(res, 200, "Operation, Successed!", "New Notification!", result))
    } catch (err) {
       return (next(createError("Something went wrong!", 500)))
    }
@@ -180,9 +180,54 @@ const updateSeenByAuthor = async (req, res, next) => {
    }
 }
 
+/**
+ * userDonations, to get latest user donations
+ * 
+ * Description:
+ *             [1] --> get user id after verify token
+ *             [2] --> check if user donate any time or no, then response
+ */
+
+const userDonations = async (req, res, next) => {
+   const {id} = req
+
+   try {
+      const donations = await prisma.donation.findMany({
+         where: {
+            userId: id
+         },
+         select: {
+            campaign: {
+               select: {
+                  id: true,
+                  name: true
+               }
+            },
+            amout: true,
+            createdAt: true,
+            seenByAuthor: true
+         }
+      })
+
+      const result = donations.map((donation) => {
+         return ({
+            amount: donation.amout, createdAt: donation.createdAt, seenByAuthor: donation.seenByAuthor,
+            ...donation.campaign
+         })
+      })
+
+      return (respSuccess(res, 200, "Operation, Successed!", 
+         donations.length < 1 ? "You Did't donate any Campaign!": "Latest Donations Found!"
+      , result))
+   } catch (err) {
+      return (next(createError("Something went wrong", 500)))
+   }
+}
+
 export {
    donate,
    viewDonations,
    DonationsSeenByAuhor,
-   updateSeenByAuthor
+   updateSeenByAuthor,
+   userDonations
 }
