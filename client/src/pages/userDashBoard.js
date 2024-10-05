@@ -1,15 +1,16 @@
-import React, {useLayoutEffect, useRef, useState } from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState } from "react";
 import NavBar from "../components/navBar";
 import ToggleNav from "../components/toggleNav";
 import { userProfileApi } from "../services/user";
 import { useDispatch, useSelector } from "react-redux";
 import PageLoader from "../components/pageLoading";
 import { signInAction } from "../store/action";
-import { userCampsApi } from "../services/campaigns";
+import { updateCmapApi, userCampsApi } from "../services/campaigns";
 import CreateCamp from "../components/createCamp";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import EditProfile from "../components/editProfile";
 import { allUserDonsApi } from "../services/donations";
+import Swal from 'sweetalert2';
 
 
 const UserDashBoard = () => {
@@ -37,17 +38,23 @@ const UserDashBoard = () => {
     const [totalAmount, setTotalAmount] = useState(0)
     const [donationsCheck, setDonationsCheck] = useState(false)
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (userCamps) {
         let result = 0
+        let activate = 0
+        let pausing = 0
+        let ending = 0
         userCamps.forEach((campaign) => {
           if (campaign.status === "ACTIVE")
-            setActive(active + 1)
+            activate += 1
           else if (campaign.status === "PAUSED")
-            setPaused(paused + 1)
+            pausing += 1
           else
-            setEnded(ended + 1)
+            ending += 1
 
+        setActive(activate)
+        setEnded(ending)
+        setPaused(pausing)
         result += campaign.currentAmount
         })
         setTotalAmount(result)
@@ -56,6 +63,47 @@ const UserDashBoard = () => {
 
     const navToggleFunc = () => {
       navBar.current.classList.toggle("left-0")
+    }
+
+    const updateCampStatus = async (campId, status) => {
+
+      try {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: `You Will ${status} this Campaign!`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: `Yes, ${status} it!`,
+          cancelButtonText: 'No, cancel!',
+          preConfirm: async () => {
+            // Change to loading state
+            Swal.showLoading();
+            try {
+              await updateCmapApi(token, campId, status)
+            } catch (err) {
+              throw new Error(err)
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Succcessed',
+              text: 'Your Campaign has been Updated.',
+              icon: 'success'
+            });
+            for (let i = 0; i < userCamps.length; i++) {
+              let allCamps = [...userCamps]
+              if (allCamps[i].id === campId) {
+                allCamps[i].status = status
+                setUserCamps([...allCamps])
+                return;
+              }
+            }
+          }
+        });
+      } catch (err) {
+
+      }
     }
 
     const dashBoardApi = async () => {
@@ -69,7 +117,6 @@ const UserDashBoard = () => {
 
           const responseThree = await allUserDonsApi(token)
           setUserDonations(responseThree.data)
-          console.log(responseThree.data)
 
           setLoading(false)
       } catch (err) {
@@ -92,26 +139,26 @@ const UserDashBoard = () => {
           <div className="container mx-auto">
             <div className="lg:block lg:mb-6 flex flex-row justify-between items-center">
             <ToggleNav clickFunc={navToggleFunc}/>
-              <h1 className="text-4xl mr-10 lg:mr-0 font-bold text-center text-indigo-600  md:mr-60 sm:mr-32">User Dashboard</h1>
+              <h1 className="text-4xl mr-10 lg:mr-0 font-bold text-center text-indigo-400  md:mr-60 sm:mr-32">User Dashboard</h1>
             </div>
 
         {/* Overview Section */}
         <div className="flex flex-wrap justify-between mb-8">
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6 m-2 transform transition-transform duration-500 hover:scale-105">
             <h2 className="text-lg font-semibold text-gray-700">Total Donations Received</h2>
-            <p className="text-2xl font-bold text-indigo-600">${totalAmount}</p>
+            <p className="text-2xl font-bold text-indigo-400">${totalAmount}</p>
           </div>
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6 m-2 transform transition-transform duration-500 hover:scale-105">
             <h2 className="text-lg font-semibold text-gray-700">Active Campaigns</h2>
-            <p className="text-2xl font-bold text-indigo-600">{active}</p>
+            <p className="text-2xl font-bold text-indigo-400">{active}</p>
           </div>
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6 m-2 transform transition-transform duration-500 hover:scale-105">
             <h2 className="text-lg font-semibold text-gray-700">Campaigns Paused</h2>
-            <p className="text-2xl font-bold text-indigo-600">{paused}</p>
+            <p className="text-2xl font-bold text-indigo-400">{paused}</p>
           </div>
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6 m-2 transform transition-transform duration-500 hover:scale-105">
             <h2 className="text-lg font-semibold text-gray-700">Campagins Ended</h2>
-            <p className="text-2xl font-bold text-indigo-600">{ended}</p>
+            <p className="text-2xl font-bold text-indigo-400">{ended}</p>
           </div>
         </div>
 
@@ -124,7 +171,7 @@ const UserDashBoard = () => {
                 <p className="text-lg font-semibold text-gray-800">Name: {userInf.f_name} {userInf.l_name}</p>
                 <p className="text-sm text-gray-500">Email: {userInf.email}</p>
               </div>
-              <button onClick={() => setEditProfToggle(!editProfToggle)} className="mt-4 lg:mt-0 text-sm text-white bg-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700">Edit Profile</button>
+              <button onClick={() => setEditProfToggle(!editProfToggle)} className="mt-4 lg:mt-0 text-sm text-white bg-indigo-400 px-4 py-2 rounded-md hover:bg-indigo-700">Edit Profile</button>
             </div>
           </div>
           {editProfToggle ? <EditProfile /> : ""}
@@ -143,10 +190,9 @@ const UserDashBoard = () => {
                   <p className="text-sm text-gray-500">{camp.status} | Start Date: {camp.startDate} | End Date: 2023-12-31</p>
                 </div>
                 <div className="mt-4 lg:mt-0 flex space-x-2">
-                  <button className="text-sm text-white bg-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-700">Edit</button>
                   <button onClick={() => {history.push({pathname: `/user/campaign/${camp.id}`, state: camp})}}
-                  className="text-sm text-white bg-green-600 px-4 py-2 rounded-md hover:bg-green-700">View</button>
-                  <button className="text-sm text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
+                    className="text-sm text-white bg-green-400 px-4 py-2 rounded-md hover:bg-green-700">View</button>
+                  <button onClick={() => updateCampStatus(camp.id, camp.status === 'PAUSED' ? 'ACTIVE' : 'PAUSED')} className="text-sm text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-700">{camp.status === 'PAUSED' ? 'ACTIVE' : 'PAUSED'}</button>
                 </div>
           </div>
             })
@@ -170,9 +216,10 @@ const UserDashBoard = () => {
           <div className={`${donationsCheck ? 'block': 'hidden'} space-y-4`}>
               {
                 userDonations.length > 0 ?
-                userDonations.map((doantion) => {
+                userDonations.map((doantion, index
+                ) => {
                   return (
-                  <div className={` bg-gray-50 p-4 rounded-md shadow-sm`}>
+                  <div key={index} className={` bg-gray-50 p-4 rounded-md shadow-sm`}>
                     <div className="flex justify-between items-start">
                       <p className="text-lg font-semibold text-gray-800">Campaign: {doantion.name}</p>
                       <p className="text-sm text-gray-500">Amount: ${doantion.amount} | Date: {doantion.createdAt} | Seen By Campaign Author: {doantion.seenByAuthor ? "YES" : "NO"}</p>

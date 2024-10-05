@@ -9,6 +9,8 @@ import { verifyToken } from "./services/auth";
 import PageLoader from "./components/pageLoading";
 import 'boxicons/css/boxicons.min.css';
 import UserCampagin from "./pages/userCamp";
+import SearchCampaigns from "./pages/searchCamps";
+import Donate from "./pages/payment";
 
 
 
@@ -58,6 +60,8 @@ function App() {
         <Switch>
           <Route exact path={"/"} component={tokenValid ? UserDashBoard : LogIn} />
           <Route exact path={"/user/campaign/:id"} component={tokenValid ? UserCampagin : LogIn} />
+          <Route exact path={"/search_Camps"} component={tokenValid ? SearchCampaigns : LogIn} />
+          <Route exact path={"/donate_payment"} component={tokenValid ? Donate : LogIn} />
           <Route exact path="/register" component={tokenValid ? "" : Register} />
           <Route exact path="/reset-password" component={tokenValid ? "" : ResetPassword} />
           <Route exact component={tokenValid ? UserDashBoard : LogIn} />

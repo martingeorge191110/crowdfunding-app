@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const NavBar = ({refrenece, clickFunc}) => {
+const NavBar = ({refrenece}) => {
 
-  
 
   return (
     <>
@@ -25,11 +24,11 @@ const NavBar = ({refrenece, clickFunc}) => {
               </Link>
             </li>
             <li>
-              <Link to='/' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <Link to='/search_Camps' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
-                  <i className="bx bx-chat"></i>
+                  <i className="bx bx-search "></i>
                 </span>
-                <span className="text-sm font-medium">Chat</span>
+                <span className="text-sm font-medium">Search Campaigns</span>
               </Link>
             </li>
             <li>

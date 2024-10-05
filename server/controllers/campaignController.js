@@ -82,9 +82,24 @@ const searchCampaign = async (req, res, next) => {
       const campaign = await prisma.campaign.findMany({
          where: {
             ...query
+         }, select: {
+            currentAmount: true,
+            name: true,
+            id: true,
+            description: true,
+            startDate: true, endDate: true,
+            goal: true,
+            status:true, category: true,
+            author: {
+               select: {
+                  id: true,
+                  f_name: true,
+                  l_name: true
+               }
+            }
          }
       })
-      
+      console.log(campaign)
       if (!campaign)
          return (next(createError("No Campaignes with your Requirments!", 404)))
 
