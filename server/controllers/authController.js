@@ -215,10 +215,23 @@ const verifyTokenController = async (req, res, next) => {
    })
 }
 
+/**
+ * logOut Controller - Log out process
+ * 
+ * Description:
+ *             [1] --> clear cookies and response
+ */
+
+const logOut = (req, res) => {
+   res.clearCookie('token')
+   return (respSuccess(res, 200, "Operation, Successed!", "Successfully logged out", null))
+}
+
 export {
    register,
    logIn,
    sendGenCode,
-   resetPass
-   ,verifyTokenController
+   resetPass,
+   verifyTokenController,
+   logOut
 }

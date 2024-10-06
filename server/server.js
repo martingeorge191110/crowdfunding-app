@@ -14,7 +14,7 @@ dotenv.config()
 const environment = process.env
 const server = express()
 
-// server.use(morgan("tiny"))
+server.use(morgan("tiny"))
 server.use(cookieParser())
 server.use(
   cors({

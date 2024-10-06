@@ -8,7 +8,7 @@ import { ErrorHandle } from './errorHandling.js'
 
 const verifyToken = (req, res, next) => {
    const {authorization} =  req.headers
-
+   console.log(authorization)
    if (!authorization) {
       const newErr = createError("Authorization Must be included in Header", 404)
       return (ErrorHandle(newErr, req, res, next));

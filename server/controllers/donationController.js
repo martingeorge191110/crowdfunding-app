@@ -16,6 +16,9 @@ const donate = async (req, res, next) => {
    const {campaignId} = req.query
    const {amount} = req.body
 
+   if (Number(amount) < 5)
+      return (next(createError("Cannot Donate with amount less than $5", 409)))
+
    try {
       const donation = await prisma.donation.create({
          data: {
@@ -117,6 +120,11 @@ const DonationsSeenByAuhor = async (req, res, next) => {
          },
          select: {
             amout: true,
+            campaign: {
+               select: {
+                  name: true
+               }
+            },
             author: {
                select: {
                   id: true,
@@ -131,12 +139,12 @@ const DonationsSeenByAuhor = async (req, res, next) => {
       })
 
       if (!donations, donations.length === 0)
-         return (next(createError("No natification sent yet!", 404)))
+         return (next(createError("No natification sent yet!", 200)))
 
       const result = donations.map((donation) => {
          return ({
             amount: donation.amout, createdAt: donation.createdAt, seenByAuthor: donation.seenByAuthor,
-            ...donation.author
+            ...donation.author, ...donation.campaign
          })
       })
 
@@ -172,7 +180,7 @@ const updateSeenByAuthor = async (req, res, next) => {
       })
 
       if (!donations || donations.count === 0)
-         return (next(createError("No notification yet!", 404)))
+         return (next(createError("No notification yet!", 200)))
 
       return (respSuccess(res, 200, "Operation, Successed!", "Notifications Updated!", null))
    } catch (err) {
