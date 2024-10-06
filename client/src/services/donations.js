@@ -38,7 +38,74 @@ const allUserDonsApi = async (token) => {
    }
 }
 
+
+/**
+ * Function Service, donation process
+ */
+
+const donateApi = async (token, campaignId, amount) => {
+   try {
+      const response = await donationApi.post(`/?campaignId=${campaignId}`, {
+         amount: amount
+      }, {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+         }
+      })
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
+/**
+ * Function Service, campaigns notifications
+ */
+
+const donationsNotificationsApi = async (token) => {
+   try {
+      const response = await donationApi.get("/notifications", {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+         }
+      })
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
+/**
+ * Function Service, See notifications related to donations
+ */
+
+const seeNotificationsApi = async (token) => {
+   try {
+      const response = await donationApi.put("/notifications",{
+         
+      }, {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type" :"application/json"
+         }
+      })
+
+      return (response.data)
+   } catch (err) {
+      console.log(err.response.data)
+      return (err.response.data)
+   }
+}
+
+
 export {
    retrieveDonsApi,
-   allUserDonsApi
+   allUserDonsApi,
+   donateApi,
+   donationsNotificationsApi,
+   seeNotificationsApi
 }

@@ -19,7 +19,14 @@ const setProfileAction = (userInf) => {
    });
 }
 
+const logOutAction = () => {
+   return ({
+      type: "LOGOUT",
+   });
+}
+
 export {
    signInAction,
-   setProfileAction
+   setProfileAction,
+   logOutAction
 }

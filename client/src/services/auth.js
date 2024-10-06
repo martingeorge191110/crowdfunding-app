@@ -87,10 +87,27 @@ const verifyToken = async (token) => {
    }
 }
 
+/**
+ * Function Service, logout process
+ */
+
+const logOutApi = (token) => {
+      const response = authApi.post("/logout", {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+            
+         }
+      })
+
+      return (response.data)
+}
+
 export {
    loginApi,
    registerApi,
    sendCodeApi,
    resetPassApi,
-   verifyToken
+   verifyToken,
+   logOutApi
 }

@@ -3,10 +3,12 @@ import NavBar from "../components/navBar";
 import { useSelector } from "react-redux";
 import { searchCampaignApi } from "../services/campaigns";
 import Loading from "../components/loading";
-import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
 const SearchCampaigns = () => {
+
+   const history = useHistory()
 
    const token = useSelector(
       state => state.user.token
@@ -55,7 +57,6 @@ const SearchCampaigns = () => {
       try {
          const response = await searchCampaignApi(token, query)
 
-         console.log(response.data)
          setLoading(false)
          if (response.data.length < 1)
             setRespMessage("No Campaigns with this Requirments")
@@ -66,24 +67,11 @@ const SearchCampaigns = () => {
       }
    }
 
-   const handleDonations = () => {
-      Swal.fire({
-         title: 'Processing your payment...',
-         text: 'Please wait a moment.',
-         icon: 'info',
-         allowOutsideClick: false,
-         didOpen: () => {
-           Swal.showLoading();
-           // Simulate a delay for the mock payment processing
-           setTimeout(() => {
-             Swal.fire({
-               title: 'Payment Successful!',
-               text: `Thank you, ${'martin'}, for your donation of $${200}.`,
-               icon: 'success',
-             });
-           }, 2000); // Simulate 2-second delay
-         },
-       });
+   const handleDonations = (campaignInfo) => {
+      history.push({
+         pathname: "/donate_payment",
+         state: campaignInfo
+      })
    }
 
    return (
@@ -179,7 +167,7 @@ const SearchCampaigns = () => {
                               <p>End Date: {campaign.endDate}</p>
                            </div>
                            {
-                              campaign.status === "ACTIVE" && <button onClick={handleDonations} className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-300">Donate</button>
+                              campaign.status === "ACTIVE" && <button onClick={() => handleDonations(campaign)} className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-300">Donate</button>
                            }
                            </div>
                      </div>

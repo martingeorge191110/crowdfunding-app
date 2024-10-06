@@ -13,7 +13,6 @@ import SearchCampaigns from "./pages/searchCamps";
 import Donate from "./pages/payment";
 
 
-
 function App() {
 
   const token = useSelector(
@@ -49,8 +48,10 @@ function App() {
   useEffect(() => {
     if (token)
       setTokenValid(true)
-    else
+    else {
+      setTokenValid(false)
       setLoading(false)
+    }
   }, [token])
 
   return (

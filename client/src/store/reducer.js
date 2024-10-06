@@ -8,7 +8,6 @@ const userState = {
    active: false
 }
 
-
 const userStateReducer = (state = userState, action) => {
    if (action.type === "LOGIN")
       return ({
@@ -18,6 +17,10 @@ const userStateReducer = (state = userState, action) => {
    if (action.type === "SET_PROFILE")
       return ({
          ...state, userInf: action.payload, active: true
+      })
+   if (action.type === "LOGOUT")
+      return ({
+         ...state, userInf: null, token: null, active: false
       })
 
    return (state)

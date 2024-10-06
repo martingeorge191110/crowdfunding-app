@@ -19,7 +19,27 @@ const userProfileApi = async (token) => {
    }
 }
 
+/**
+ * Function Service, to update user infomration
+ */
+
+const updateUserApi = async (token, body) => {
+   try {
+      const response = await userApi.put("/profile", body, {
+         headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+         }
+      })
+
+      return (response.data)
+   } catch (err) {
+      return (err.response.data)
+   }
+}
+
 
 export {
-   userProfileApi
+   userProfileApi,
+   updateUserApi
 }

@@ -9,7 +9,7 @@ import { updateCmapApi, userCampsApi } from "../services/campaigns";
 import CreateCamp from "../components/createCamp";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import EditProfile from "../components/editProfile";
-import { allUserDonsApi } from "../services/donations";
+import { allUserDonsApi, donationsNotificationsApi, seeNotificationsApi } from "../services/donations";
 import Swal from 'sweetalert2';
 
 
@@ -32,11 +32,16 @@ const UserDashBoard = () => {
     const [userCamps, setUserCamps] = useState([])
     const [userDonations, setUserDonations] = useState([])
 
+
     const [active, setActive] = useState(0)
     const [paused, setPaused] = useState(0)
     const [ended, setEnded] = useState(0)
     const [totalAmount, setTotalAmount] = useState(0)
     const [donationsCheck, setDonationsCheck] = useState(false)
+
+    const [notifChecks, setNotifChecks] = useState(false)
+    const [seeNotiOnce, setSeeNotiOnce] = useState(false)
+    const [notifications, setNotifications] = useState([])
 
     useEffect(() => {
       if (userCamps) {
@@ -118,9 +123,14 @@ const UserDashBoard = () => {
           const responseThree = await allUserDonsApi(token)
           setUserDonations(responseThree.data)
 
+          const responseFour = await donationsNotificationsApi(token)
+          setNotifications(responseFour.data)
+
+          if (response.success === false)
+            return;
           setLoading(false)
       } catch (err) {
-          throw new Error(err)
+          return (err)
       }
     }
     useLayoutEffect(() => {
@@ -131,6 +141,23 @@ const UserDashBoard = () => {
     const createCamp = () => {
       setCreateCampToggle(!createCampToggle)
     }
+
+    const seeNotifications = async () => {
+      setNotifChecks(!notifChecks)
+
+      if (seeNotiOnce)
+        return (null)
+
+      setSeeNotiOnce(true)
+      try {
+        const response = await seeNotificationsApi(token)
+        // console.log(response)
+        return (response)
+      } catch (err) {
+        return (null)
+      }
+    }
+
     return (
       <>
       {loading ? "" : <NavBar refrenece={navBar}/>}
@@ -232,12 +259,22 @@ const UserDashBoard = () => {
 
 
         {/* Notifications/Message Center */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <h2 className="text-xl font-bold text-gray-700 mb-4">Notifications/Message Center</h2>
-          <div className="space-y-4">
-            <div className="bg-gray-50 p-4 rounded-md shadow-sm">
-              <p className="text-sm text-gray-500">You have a new donation from John Doe for the "Save the Earth" campaign.</p>
-            </div>
+        <div onClick={seeNotifications} className="bg-white cursor-pointer hover:bg-slate-300 transition-all ease-in-out rounded-lg shadow-lg p-8 mb-8">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Notifications/Message Center {notifications && notifications.length > 0 && <span className="text-red-600 mt-4 ml-4 w-full text-center bg-red-300 rounded-full p-1 px-3">{notifications.length}</span>}</h2>
+            <i className={`bx bx-chevron-${notifChecks ? 'up': 'down'} text-2xl`}></i>
+          </div>
+          <div className={`${notifChecks ? 'block' : "hidden"} space-y-4`}>
+            {
+              notifications && notifications.length > 0 &&
+              notifications.map((notification, index) => {
+                return (
+                  <div key={index} className="bg-gray-50 p-4 rounded-md shadow-sm">
+                    <p className="text-sm text-gray-500">You have a new donation from {notification.f_name + ' ' + notification.l_name} for the "{notification.name}" campaign, with ${notification.amount}</p>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
 

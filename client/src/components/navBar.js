@@ -1,8 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { logOutApi } from "../services/auth";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { logOutAction } from "../store/action";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const NavBar = ({refrenece}) => {
 
+  const history = useHistory()
+
+  const token = useSelector(
+    state => state.user.token
+  )
+
+  const dispatch = useDispatch()
+
+  const logOutHandling = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out from the system.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+        logOutApi(token)
+        
+          Swal.fire(
+              'Logged out!',
+              'You have been successfully logged out.',
+              'success'
+          ).then(() => {
+              dispatch(logOutAction())
+              history.push({
+                pathname: '/'
+              })
+          });
+      }
+  });
+    
+  }
 
   return (
     <>
@@ -51,12 +91,12 @@ const NavBar = ({refrenece}) => {
               </Link>
             </li>
             <li>
-              <Link className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <button onClick={logOutHandling} className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-log-out"></i>
                 </span>
                 <span className="text-sm font-medium">Logout</span>
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
