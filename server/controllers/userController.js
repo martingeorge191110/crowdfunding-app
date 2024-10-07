@@ -26,7 +26,6 @@ const retrieveProfile = async (req, res, next) => {
 
       return (respSuccess(res, 200, "Operation, Seccessed!", "User infromation found Successfuly!", user))
    } catch (err) {
-      console.log(err)
       return (next(createError("Something went wrong while retrieving user information", 500)))
    }
 }

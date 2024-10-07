@@ -5,9 +5,11 @@ import { registerApi } from "../services/auth.js";
 import { useDispatch } from "react-redux";
 import { signInAction } from "../store/action.js";
 import { getCookie } from "../utilis/authUtilies.js";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const Register = () => {
 
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const [firstName, setFirstName] = useState("")
@@ -20,6 +22,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
+    void(gender)
     e.preventDefault()
     const form = new FormData(e.target)
 
@@ -36,8 +39,13 @@ const Register = () => {
       setLoading(false)
       setRepsonse(response)
       console.log(response)
-      if (response.success)
+      if (response.success) {
         dispatch(signInAction(getCookie("token"), response.data, true))
+
+        history.push({
+          pathname: "/"
+        })
+      }
 
     } catch (err) {
       setLoading(false)
@@ -54,11 +62,11 @@ const Register = () => {
         <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-gray-700">First Name</label>
-            <Input setInput={setFirstName} value={firstName} name={"firstName"} type={"text"} style={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}/>
+            <Input setInput={setFirstName} value={firstName} name={"firstName"} type={"text"} classes={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}/>
           </div>
           <div>
             <label className="block text-gray-700">Last Name</label>
-            <Input setInput={setLastName} value={lastName} name={"lastName"} type={"text"} style={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}/>
+            <Input setInput={setLastName} value={lastName} name={"lastName"} type={"text"} classes={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}/>
           </div>
           <div>
             <label className="block text-gray-700">Gender</label>
@@ -67,7 +75,7 @@ const Register = () => {
                 <Input setInput={setGender}
                   type={"radio"}
                   name={"gender"}
-                  style={"form-radio h-5 w-5 text-indigo-600"}
+                  classes={"form-radio h-5 w-5 text-indigo-600"}
                   value={"MALE"}
                 />
                 <span className="text-gray-700">Male</span>
@@ -76,7 +84,7 @@ const Register = () => {
                 <Input setInput={setGender}
                   type={"radio"}
                   name={"gender"}
-                  style={"form-radio h-5 w-5 text-indigo-600"}
+                  classes={"form-radio h-5 w-5 text-indigo-600"}
                   value={"FEMALE"}
                 />
                 <span className="text-gray-700">Female</span>
@@ -89,7 +97,7 @@ const Register = () => {
               value={email}
               name={"email"}
               type={"email"}
-              style={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}
+              classes={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}
             />
           </div>
           <div>
@@ -98,7 +106,7 @@ const Register = () => {
               value={password}
               name={"password"}
               type={"password"}
-              style={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}
+              classes={"w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"}
             />
           </div>
           <button

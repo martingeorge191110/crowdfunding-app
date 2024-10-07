@@ -11,6 +11,7 @@ import 'boxicons/css/boxicons.min.css';
 import UserCampagin from "./pages/userCamp";
 import SearchCampaigns from "./pages/searchCamps";
 import Donate from "./pages/payment";
+import Profile from "./pages/profile";
 
 
 function App() {
@@ -62,9 +63,10 @@ function App() {
           <Route exact path={"/"} component={tokenValid ? UserDashBoard : LogIn} />
           <Route exact path={"/user/campaign/:id"} component={tokenValid ? UserCampagin : LogIn} />
           <Route exact path={"/search_Camps"} component={tokenValid ? SearchCampaigns : LogIn} />
+          <Route exact path={"/profile"} component={tokenValid ? Profile : LogIn} />
           <Route exact path={"/donate_payment"} component={tokenValid ? Donate : LogIn} />
-          <Route exact path="/register" component={tokenValid ? "" : Register} />
-          <Route exact path="/reset-password" component={tokenValid ? "" : ResetPassword} />
+          <Route exact path="/register" component={tokenValid ? UserDashBoard : Register} />
+          <Route exact path="/reset-password" component={tokenValid ? UserDashBoard : ResetPassword} />
           <Route exact component={tokenValid ? UserDashBoard : LogIn} />
         </Switch>
       </BrowserRouter>

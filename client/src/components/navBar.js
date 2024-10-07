@@ -72,7 +72,7 @@ const NavBar = ({refrenece}) => {
               </Link>
             </li>
             <li>
-              <Link to='/' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
+              <Link to='/Profile' className="flex flex-row items-center h-12 transform transition-transform ease-in-out duration-300 text-gray-500 hover:text-indigo-500 hover:scale-105">
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-user"></i>
                 </span>
@@ -84,10 +84,7 @@ const NavBar = ({refrenece}) => {
                 <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400 hover:text-indigo-500 transition-all duration-300">
                   <i className="bx bx-bell"></i>
                 </span>
-                <span className="text-sm font-medium">Notifications</span>
-                <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">
-                  5
-                </span>
+                <span className="text-sm font-medium">Chat <span className="text-[12px] ml-2">(Upcomming Feature)</span></span>
               </Link>
             </li>
             <li>

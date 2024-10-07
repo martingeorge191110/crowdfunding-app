@@ -177,10 +177,10 @@ const SearchCampaigns = () => {
           {/* Each Campaign Item */}
 
           {/* More campaigns can be added similarly */}
-        </div>
+         </div>
 
       </div>
-    </div>
+   </div>
       </>
    )
 }
