@@ -6,8 +6,8 @@ This is a full-stack crowdfunding application featuring a Node.js and Express ba
 - [Features](#features)
 - [Technologies](#technologies)
 - [Installation](#installation)
-  - [Client Side Setup](#client-side-setup)
-  - [Server Side Setup](#server-side-setup)
+- [Client Side Setup](#client-side-setup)
+- [Server Side Setup](#server-side-setup)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -20,25 +20,30 @@ This is a full-stack crowdfunding application featuring a Node.js and Express ba
 - Responsive design for web and mobile devices
 
 ## Technologies
+- **Frontend:**
+  - React
+  - Axios
+  - Tailwind
 - **Backend:**
   - Node.js
   - Express
   - Prisma
+  - JWT for Auth
+- **Database:**
   - MySQL
-- **Frontend:**
-  - React
-  - Axios
-  - Bootstrap
 
 ## Installation
 
 To set up the project locally, follow the steps below for both the client and server sides.
 
+ **Clone the repository:**
+   ``bash
+   git clone https://github.com/martingeorge191110/crowdfunding-app.git
+
 ### Client Side Setup
 
-1. **Clone the repository:**
+1. **Navigate to the Client directory:**
    ```bash
-   git clone https://github.com/martingeorge191110/crowdfunding-app.git
    cd crowdfunding-app/client
 
 2. **Install dependencies:**
@@ -51,7 +56,7 @@ To set up the project locally, follow the steps below for both the client and se
 
 ### Server Side Setup
 
-1. **Navigate to the server directory:**
+1. **Navigate to the Server directory:**
    ```bash
    cd ../server
 
