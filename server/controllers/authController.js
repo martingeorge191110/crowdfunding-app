@@ -103,7 +103,6 @@ const logIn = async (req, res, next) => {
 
       return (respSuccess(res, 200, "Operation Successfuly!", "Login, Successfuly", jsonData))
    } catch (err) {
-      console.log(err)
       const newError = createError("Something went wrong during Login Process!", 500)
       return (next(newError))
    }
@@ -161,7 +160,6 @@ const resetPass = async (req, res, next) => {
    const {password, confirmPass, email, generatedCode} = req.body
 
    /* Check Gen Code Validation */
-   console.log(genCodeGlobal)
    if (!genCodeGlobal[email]) {
       return (next(createError("No generated code found for this email.", 404)));
    }

@@ -99,7 +99,7 @@ const searchCampaign = async (req, res, next) => {
             }
          }
       })
-      console.log(campaign)
+
       if (!campaign)
          return (next(createError("No Campaignes with your Requirments!", 404)))
 
