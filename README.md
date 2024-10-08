@@ -36,14 +36,12 @@ This is a full-stack crowdfunding application featuring a Node.js and Express ba
 
 To set up the project locally, follow the steps below for both the client and server sides.
 
- **Clone the repository:**
-   ```bash
-   git clone https://github.com/martingeorge191110/crowdfunding-app.git
-
+### **Clone the repository:**
 ### Client Side Setup
 
 1. **Navigate to the Client directory:**
    ```bash
+   git clone https://github.com/martingeorge191110/crowdfunding-app.git
    cd crowdfunding-app/client
 
 2. **Install dependencies:**
