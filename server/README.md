@@ -19,7 +19,7 @@ This is the backend server for the Crowdfunding Platform. The server is built us
 <ul>
   <li>Port: The server listens on a configurable port via environment variables (default: <code>7000</code>).</li>
   <li>Environment Variables: Managed with <code>dotenv</code>, storing sensitive information like database credentials and JWT secrets.</li>
-  <li>DATABASE_URL=mysql://<USER_NAME>:<USER_PASSWORD>@<SERVER_HOST>:3306/<DATABASE_NAME></li>
+  <li>DATABASE_URL=mysql://<(USER_NAME)>:<(USER_PASSWORD)>@<(SERVER_HOST)>:3306/<(DATABASE_NAME)></li>
   <li>NODE_ENV=development</li>
   <li>JWT_SECRET=yoursecretkey</li>
   <li>JWT_EXP=yourexpiredate</li>
