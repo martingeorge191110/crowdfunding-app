@@ -7,7 +7,7 @@ This is the backend server for the Crowdfunding Platform. The server is built us
 ### Key Features
 
 - **Express.js Framework**: Provides routing, middleware support, and easy handling of API requests.
-- **Prisma ORM**: Handles interactions with the PostgreSQL database in a type-safe and efficient manner.
+- **Prisma ORM**: Handles interactions with the MySQL database in a type-safe and efficient manner.
 - **JWT Authentication**: Secures the platform with JSON Web Tokens for user sessions.
 - **Cookie-based Authentication**: Utilizes cookies for managing session tokens securely.
 - **Campaign & Donation Management**: API routes that handle all operations related to crowdfunding campaigns and donations.
