@@ -165,7 +165,7 @@ const UserDashBoard = () => {
         <div className="min-h-screen lg:ml-52 bg-gray-100 p-8">
           <div className="container mx-auto">
             <div className="lg:block lg:mb-6 flex flex-row justify-between items-center">
-            <ToggleNav clickFunc={navToggleFunc}/>
+              <ToggleNav clickFunc={navToggleFunc}/>
               <h1 className="text-4xl mr-10 lg:mr-0 font-bold text-center text-indigo-400  md:mr-60 sm:mr-32">User Dashboard</h1>
             </div>
 

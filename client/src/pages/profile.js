@@ -1,11 +1,14 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { userProfileApi } from "../services/user";
 import PageLoader from "../components/pageLoading";
 import NavBar from "../components/navBar";
+import ToggleNav from "../components/toggleNav";
 
 const Profile = () => {
   const token = useSelector((state) => state.user.token);
+
+  const navBar = useRef(null)
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,17 +27,26 @@ const Profile = () => {
   };
 
   useLayoutEffect(() => {
-    if (loading) pageApis();
+    if (loading)
+      pageApis();
   }, [loading]);
+
+  const navToggleFunc = () => {
+    navBar.current.classList.toggle("left-0")
+  }
 
   return (
     <>
       {loading ? (
         <PageLoader />
       ) : (
-          <><NavBar />
-        <section className="pt-16 bg-blueGray-50 flex items-center justify-center">
-          <div className="w-full lg:w-4/12 px-4 mx-auto">
+          <><NavBar refrenece={navBar}/>
+        <section className="pt-16 bg-blueGray-50 flex flex-col items-center justify-center">
+        <div className="lg:block lg:mb-6 flex flex-row justify-between items-center">
+               <ToggleNav clickFunc={navToggleFunc}/>
+               <h1 className="text-4xl mr-14 lg:mr-0 font-bold text-center text-indigo-400  md:mr-60 sm:mr-32">User Profile</h1>
+            </div>
+          <div className="w-full mt-20 lg:mt-0 lg:w-4/12 px-4 mx-auto">
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
               <div className="px-6">
                 <div className="flex flex-wrap justify-center">

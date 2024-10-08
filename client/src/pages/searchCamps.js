@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import NavBar from "../components/navBar";
 import { useSelector } from "react-redux";
 import { searchCampaignApi } from "../services/campaigns";
 import Loading from "../components/loading";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import ToggleNav from "../components/toggleNav";
 
 
 const SearchCampaigns = () => {
@@ -13,6 +14,8 @@ const SearchCampaigns = () => {
    const token = useSelector(
       state => state.user.token
    )
+
+   const navBar = useRef(null)
 
    const [campName, setCampName] = useState("")
 
@@ -74,14 +77,21 @@ const SearchCampaigns = () => {
       })
    }
 
+   const navToggleFunc = () => {
+      navBar.current.classList.toggle("left-0")
+   }
+
    return (
       <>
       {/* <NavBar/> */}
-      <NavBar/>
+      <NavBar refrenece={navBar}/>
 
       <div className="min-h-screen lg:ml-52 bg-gray-100 p-8">
       <div className="container mx-auto">
-
+            <div className="lg:block lg:mb-6 flex flex-row justify-between items-center">
+               <ToggleNav clickFunc={navToggleFunc}/>
+               <h1 className="text-4xl mr-20 lg:mr-0 font-bold text-center text-indigo-400  md:mr-60 sm:mr-32">Campaigns</h1>
+            </div>
         {/* Search Section */}
          <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
             <h2 className="text-2xl font-bold text-indigo-600 mb-6">Search Campaigns</h2>
