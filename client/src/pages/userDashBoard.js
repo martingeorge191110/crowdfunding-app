@@ -151,7 +151,7 @@ const UserDashBoard = () => {
       setSeeNotiOnce(true)
       try {
         const response = await seeNotificationsApi(token)
-        // console.log(response)
+
         return (response)
       } catch (err) {
         return (null)

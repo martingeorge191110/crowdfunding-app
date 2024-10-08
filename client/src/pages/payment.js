@@ -8,7 +8,8 @@ import { donateApi } from "../services/donations";
 
 const Donate = () => {
 
-    const campaign = useHistory().location.state
+    const history = useHistory()
+    const campaign = history.location.state
 
     const token = useSelector(
         state => state.user.token
@@ -50,7 +51,11 @@ const Donate = () => {
                 title: 'Payment Successful!',
                 text: `Thank you, ${userResp.data.f_name + ' ' + userResp.data.l_name}, for your donation of $${amount}.`,
                 icon: 'success',
-            })} else if (resSuccess === false) {
+            })
+            history.push({
+                pathname: "/"
+            })
+        } else if (resSuccess === false) {
                 setFalseMessage(donationResp.message)
                 Swal.fire({
                     title: 'Payment Error',
